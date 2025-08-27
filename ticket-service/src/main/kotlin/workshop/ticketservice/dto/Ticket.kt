@@ -5,5 +5,6 @@ data class Ticket(
         val alarmId: String,
         val customerId: String,
         val status: String,
-        val createdAt: Long
+        val createdAt: Long,
+        val description: String = ""
 )
