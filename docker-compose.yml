@@ -124,6 +124,23 @@ services:
       timeout: 10s
       retries: 5
 
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend/src:/app/src:delegated
+      - ./frontend/public:/app/public:delegated
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - DOCKER_ENV=true
+    depends_on:
+      - alarm-service
+      - customer-service
+      - ticket-service
+
 volumes:
   maven-cache-alarm:
   maven-cache-customer:
