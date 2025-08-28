@@ -20,6 +20,9 @@ class TicketListeners(private val ticketService: TicketService) {
     private val log = LoggerFactory.getLogger(TicketListeners::class.java)
     private val objectMapper = jacksonObjectMapper()
 
+
+    // TODO ADD @KafkaListener( ???? 
+
     @KafkaListener(topics = ["alarms"], groupId = "ticket-service")
     fun onAlarm(alarmJson: String) {
         try {

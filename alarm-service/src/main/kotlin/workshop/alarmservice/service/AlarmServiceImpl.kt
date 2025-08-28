@@ -8,12 +8,6 @@ import workshop.alarmservice.dto.AlarmRequest
 import workshop.alarmservice.publisher.AlarmEventPublisher
 import workshop.alarmservice.repository.AlarmRepository
 
-/**
- * Implementation of AlarmService interface.
- *
- * This class contains the business logic for alarm operations. It orchestrates between the
- * repository and event publishing.
- */
 @Service
 class AlarmServiceImpl(
         private val alarmRepository: AlarmRepository,
@@ -67,7 +61,7 @@ class AlarmServiceImpl(
                 alarmRepository.findByService(service)
 
         override fun getActiveAlarms(): List<AlarmEvent> {
-                // Get all alarms and filter to latest event per alarm ID that's not resolved
+                // Get latest event per alarm ID that's not resolved
                 return alarmRepository
                         .findAll()
                         .groupBy { it.alarmId }

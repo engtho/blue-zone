@@ -10,12 +10,6 @@ import workshop.ticketservice.dto.Ticket
 import workshop.ticketservice.dto.TicketEvent
 import workshop.ticketservice.repository.TicketRepository
 
-/**
- * Implementation of TicketService interface.
- *
- * This class contains the business logic for ticket operations. It orchestrates between the
- * repository, external clients, and messaging.
- */
 @Service
 class TicketServiceImpl(
         private val ticketRepository: TicketRepository,
@@ -31,7 +25,6 @@ class TicketServiceImpl(
                 impact: String
         ): Ticket {
                 try {
-                        // Try to get customer information
                         val customerInfo =
                                 if (customerId != "general") {
                                         customerClient.getCustomerOrDefault(

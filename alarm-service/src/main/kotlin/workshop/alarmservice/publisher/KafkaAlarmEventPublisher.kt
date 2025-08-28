@@ -22,6 +22,7 @@ class KafkaAlarmEventPublisher(private val kafkaTemplate: KafkaTemplate<String, 
     override fun publish(event: AlarmEvent) {
         try {
             val json = objectMapper.writeValueAsString(event)
+            // TODO FIX SOMETHING ? 
             kafkaTemplate.send("alarms", event.alarmId, json)
             log.info("Published alarm event: {}", event.alarmId)
         } catch (e: Exception) {
