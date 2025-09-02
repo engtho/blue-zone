@@ -5,7 +5,6 @@ import java.util.UUID
 import org.slf4j.LoggerFactory
 import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Service
-import workshop.ticketservice.client.CustomerClient
 import workshop.ticketservice.dto.Ticket
 import workshop.ticketservice.dto.TicketEvent
 import workshop.ticketservice.repository.TicketRepository
@@ -13,8 +12,7 @@ import workshop.ticketservice.repository.TicketRepository
 @Service
 class TicketServiceImpl(
         private val ticketRepository: TicketRepository,
-        private val kafkaTemplate: KafkaTemplate<String, String>,
-        private val customerClient: CustomerClient
+        private val kafkaTemplate: KafkaTemplate<String, String>
 ) : TicketService {
         private val log = LoggerFactory.getLogger(TicketServiceImpl::class.java)
 
@@ -25,18 +23,9 @@ class TicketServiceImpl(
                 impact: String
         ): Ticket {
                 try {
-                        val customerInfo =
-                                if (customerId != "general") {
-                                        customerClient.getCustomerOrDefault(
-                                                customerId,
-                                                "Customer $customerId"
-                                        )
-                                } else {
-                                        "General incident"
-                                }
-
                         val ticketId = UUID.randomUUID().toString()
-                        val description = "Incident: $service $impact affecting $customerInfo"
+                        val description =
+                                "Incident: $service $impact affecting customer $customerId"
                         val ticket =
                                 Ticket(
                                         ticketId,
@@ -117,7 +106,21 @@ class TicketServiceImpl(
         override fun updateTicketStatus(ticketId: String, newStatus: String): Ticket? {
                 val existingTicket = ticketRepository.findById(ticketId) ?: return null
                 val updatedTicket = existingTicket.copy(status = newStatus)
-                return ticketRepository.update(updatedTicket)
+                val savedTicket = ticketRepository.update(updatedTicket)
+
+                // Publish ticket status update event
+                val event =
+                        TicketEvent(
+                                ticketId,
+                                existingTicket.alarmId,
+                                existingTicket.customerId,
+                                newStatus,
+                                Instant.now().epochSecond
+                        )
+                publishTicketEvent(event, ticketId)
+
+                log.info("Updated ticket {} status to {}", ticketId, newStatus)
+                return savedTicket
         }
 
         private fun publishTicketEvent(event: TicketEvent, ticketId: String) {

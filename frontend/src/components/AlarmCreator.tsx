@@ -63,7 +63,6 @@ const AlarmCreator: React.FC = () => {
                         <option value="BROADBAND">Broadband</option>
                         <option value="MOBILE">Mobile</option>
                         <option value="TV">TV</option>
-                        <option value="VOIP">VoIP</option>
                     </select>
                 </div>
 

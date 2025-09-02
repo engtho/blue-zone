@@ -299,6 +299,39 @@ body {
     font-size: 0.9rem;
 }
 
+/* Ticket Actions */
+.ticket-actions {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #ecf0f1;
+    display: flex;
+    justify-content: center;
+}
+
+.resolve-button {
+    background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 8px rgba(39, 174, 96, 0.2);
+}
+
+.resolve-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+    background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+}
+
+.resolve-button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(39, 174, 96, 0.2);
+}
+
 /* Footer */
 .app-footer {
     background-color: #34495e;

@@ -14,6 +14,7 @@ export interface Ticket {
     customerId: string;
     status: string;
     createdAt: number;
+    description: string;
     priority?: number;
 }
 

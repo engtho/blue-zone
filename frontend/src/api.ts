@@ -37,5 +37,14 @@ export const ticketApi = {
         const response = await fetch('/api/tickets');
         if (!response.ok) throw new Error('Failed to fetch tickets');
         return response.json();
+    },
+
+    updateTicketStatus: async (ticketId: string, status: string): Promise<Ticket> => {
+        const response = await fetch(`/api/tickets/${ticketId}/status?status=${status}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' }
+        });
+        if (!response.ok) throw new Error('Failed to update ticket status');
+        return response.json();
     }
 };

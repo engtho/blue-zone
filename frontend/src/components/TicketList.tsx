@@ -45,6 +45,23 @@ const TicketList: React.FC = () => {
         return () => clearInterval(interval);
     }, []);
 
+    const handleResolveTicket = async (ticketId: string) => {
+        try {
+            await ticketApi.updateTicketStatus(ticketId, 'RESOLVED');
+            // Refresh tickets immediately to show the update
+            setTickets(prev =>
+                prev.map(ticket =>
+                    ticket.ticketId === ticketId
+                        ? { ...ticket, status: 'RESOLVED' }
+                        : ticket
+                )
+            );
+        } catch (err) {
+            console.error('Failed to resolve ticket:', err);
+            setError(err instanceof Error ? err.message : 'Failed to resolve ticket');
+        }
+    };
+
     const formatTimestamp = (timestamp: number) => {
         return new Date(timestamp * 1000).toLocaleString();
     };
@@ -88,6 +105,11 @@ const TicketList: React.FC = () => {
 
                                 <div className="ticket-details">
                                     <div className="detail-row">
+                                        <span className="label">Description:</span>
+                                        <span className="value">{ticket.description}</span>
+                                    </div>
+
+                                    <div className="detail-row">
                                         <span className="label">Customer:</span>
                                         <span className="value">
                                             {ticket.customer?.name || ticket.customerId}
@@ -127,6 +149,17 @@ const TicketList: React.FC = () => {
                                         <span className="value">{formatTimestamp(ticket.createdAt)}</span>
                                     </div>
                                 </div>
+
+                                {ticket.status === 'OPEN' && (
+                                    <div className="ticket-actions">
+                                        <button
+                                            className="resolve-button"
+                                            onClick={() => handleResolveTicket(ticket.ticketId)}
+                                        >
+                                            ✅ Resolve Ticket
+                                        </button>
+                                    </div>
+                                )}
                             </div>
                         ))}
                 </div>

@@ -36,7 +36,7 @@ class StaticCustomerRepository : CustomerRepository {
                                         name = "Oslo Universitetssykehus",
                                         email = "it@ous.no",
                                         phone = "+47 23 07 00 00",
-                                        services = listOf("BROADBAND", "MOBILE", "TV", "VOIP"),
+                                        services = listOf("BROADBAND", "MOBILE", "TV"),
                                         priority = 1, // Hospital - emergency services
                                         region = "Oslo"
                                 ),
